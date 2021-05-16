@@ -1,0 +1,40 @@
+.work {
+	padding: 51px 0 46px 0;
+	background-color: $grey-bg;
+	&__items {
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		flex-wrap: wrap;
+	}
+	&__item {
+		margin-top: 26px;
+		margin-right: 20px;
+		width: 262px;
+		&:nth-child(4) {
+			margin-right: 0;
+		}
+		&:nth-child(7) {
+			margin-right: 0;
+		}
+		&-icon {
+			display: block;
+			margin: 0 auto;
+			height: 57px;
+		}
+		&-title {
+			margin-top: 12px;
+			color: $orange-text-and-btn-bg;
+			font-size: 16px;
+			font-weight: 700;
+			text-align: center;
+		}
+		&-descr {
+			color: $grey-text;
+			font-size: 14px;
+			font-weight: 300;
+			line-height: 20px;
+			text-align: center;
+		}
+	}
+}

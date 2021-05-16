@@ -1,0 +1,86 @@
+.feed {
+	padding: 51px 0 65px 0;
+	&__descr {
+		color: $dark-grey-text;
+		font-size: 21px;
+		font-weight: 300;
+		text-align: center;
+	}
+	&__slider-container {
+		position: relative;
+		margin: 31px auto 0 auto;
+		min-height: 241px;
+	}
+	&__slider {
+		position: absolute;
+		width: 1412px;
+		left: 50%;
+		transform: translateX(-50%);
+		transition: $slider-animation-duration all;
+		&-item {
+			position: absolute;
+			width: 600px;
+			min-height: 241px;
+			opacity: 0.3;
+			transform: scale(0.6);
+			transition: $slider-animation-duration all;
+			&-avatar {
+				display: block;
+				margin: 0 auto;
+				width: 114px;
+				height: 114px;
+			}
+			&-name {
+				margin-top: 19px;
+				font-size: 18px;
+				font-weight: 700;
+				text-align: center;
+			}
+			&-comment {
+				margin-top: 14px;
+				width: 600px;
+				color: $grey-text;
+				font-size: 14px;
+				font-weight: 300;
+				line-height: 22px;
+				text-align: justify;
+				text-align-last: center;
+			}
+			&_left {
+				left: -143px;
+			}
+			&_current {
+				left: 50%;
+				transform: translateX(-50%) scale(1);
+				opacity: 1;
+			}
+			&_right {
+				right: -143px;
+			}
+			&_hidden {
+				animation: slideDisappearance $slider-animation-duration ease;
+				visibility: hidden;
+			}
+			&_visible {
+				animation: slideAppearance $slider-animation-duration ease;
+				visibility: visible;
+			}
+		}
+		&-back-btn {
+			left: calc(50% - 103px);
+			transform: translateX(-50%);
+		}
+		&-forward-btn {
+			right: calc(50% - 103px);
+			transform: translateX(50%);
+		}
+	}
+	.slider-btn {
+		position: absolute;
+		display: block;
+		padding: 0;
+		background-color: transparent;
+		border: none;
+		top: 34px;
+	}
+}

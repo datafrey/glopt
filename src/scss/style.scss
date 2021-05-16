@@ -1,0 +1,56 @@
+@import 'libs/bootstrap-reboot.min';
+@import 'libs/bootstrap-grid.min';
+
+@import 'base/fonts';
+@import 'base/variables';
+@import 'base/mixins';
+@import 'base/animations';
+
+* {
+	font-family: 'Roboto', sans-serif;
+}
+
+.divider {
+	margin: 20px auto 17px auto;
+	width: 148px;
+	height: 1px;
+	background-color: $orange-text-and-btn-bg;
+}
+
+@media (max-width: 575px) {
+	.divider {
+		margin: 10px auto 8px auto;
+		width: 80px;
+	}
+}
+
+@import 'blocks/buttons/buttons';
+@import 'blocks/buttons/media';
+@import 'blocks/header/header';
+@import 'blocks/header/media';
+@import 'blocks/promo/promo';
+@import 'blocks/promo/media';
+@import 'blocks/titles/titles';
+@import 'blocks/titles/media';
+@import 'blocks/advantages/advantages';
+@import 'blocks/advantages/media';
+@import 'blocks/commitments/commitments';
+@import 'blocks/commitments/media';
+@import 'blocks/agent-in-china/agent-in-china';
+@import 'blocks/agent-in-china/media';
+@import 'blocks/prices/prices';
+@import 'blocks/prices/media';
+@import 'blocks/consultation/consultation';
+@import 'blocks/consultation/media';
+@import 'blocks/managers/managers';
+@import 'blocks/managers/media';
+@import 'blocks/work/work';
+@import 'blocks/work/media';
+@import 'blocks/feed/feed';
+@import 'blocks/feed/media';
+@import 'blocks/questions/questions';
+@import 'blocks/questions/media';
+@import 'blocks/map/map';
+@import 'blocks/map/media';
+@import 'blocks/footer/footer';
+@import 'blocks/footer/media';
