@@ -142,14 +142,14 @@ yarn-error.log*
 });
 
 gulp.task('html', () => {
-	return gulp.src('src/*.html')
+  return gulp.src('src/*.html')
           .pipe(htmlmin({ collapseWhitespace: true }))
           .pipe(gulp.dest(dist))
           .pipe(browserSync.stream());
 });
 
 gulp.task('styles', () => {
-	return gulp.src('src/scss/**/*.+(scss|sass)')
+  return gulp.src('src/scss/**/*.+(scss|sass)')
           .pipe(
             sass({ outputStyle: 'compressed' })
               .on('error', sass.logError)
@@ -162,7 +162,7 @@ gulp.task('styles', () => {
 });
 
 gulp.task('scripts', () => {
-	return gulp.src('src/js/**/*.js')
+  return gulp.src('src/js/**/*.js')
           .pipe(webpackStream({
             mode: 'development',
             entry: './src/js/main.js',
@@ -201,19 +201,19 @@ gulp.task('scripts', () => {
 });
 
 gulp.task('fonts', () => {
-	return gulp.src('src/fonts/**/*')
+  return gulp.src('src/fonts/**/*')
           .pipe(gulp.dest(`${ dist }/fonts`))
           .pipe(browserSync.stream());
 });
 
 gulp.task('icons', () => {
-	return gulp.src('src/icons/**/*')
+  return gulp.src('src/icons/**/*')
           .pipe(gulp.dest(`${ dist }/icons`))
           .pipe(browserSync.stream());
 });
 
 gulp.task('images', () => {
-	return gulp.src('src/img/**/*')
+  return gulp.src('src/img/**/*')
           .pipe(
             imagemin([
               imagemin.gifsicle({ interlaced: true }),
@@ -234,24 +234,24 @@ gulp.task('images', () => {
 gulp.task('watch', () => {
   const bsPort = 3000;
   browserSync.init({
-		server: dist,
+    server: dist,
     port: bsPort,
     ui: {
       port: bsPort + 1
     },
     notify: true
-	});
+  });
 
-	gulp.watch('src/*.html').on('change', gulp.parallel('html'));
-	gulp.watch('src/scss/**/*.+(scss|sass|css)', gulp.parallel('styles'));
-	gulp.watch('src/js/**/*.js').on('change', gulp.parallel('scripts'));
-	gulp.watch('src/fonts/**/*').on('all', gulp.parallel('fonts'));
-	gulp.watch('src/icons/**/*').on('all', gulp.parallel('icons'));
-	gulp.watch('src/img/**/*').on('all', gulp.parallel('images'));
+  gulp.watch('src/*.html').on('change', gulp.parallel('html'));
+  gulp.watch('src/scss/**/*.+(scss|sass|css)', gulp.parallel('styles'));
+  gulp.watch('src/js/**/*.js').on('change', gulp.parallel('scripts'));
+  gulp.watch('src/fonts/**/*').on('all', gulp.parallel('fonts'));
+  gulp.watch('src/icons/**/*').on('all', gulp.parallel('icons'));
+  gulp.watch('src/img/**/*').on('all', gulp.parallel('images'));
 });
 
 gulp.task('build-production-scripts', () => {
-	return gulp.src('src/js/**/*.js')
+  return gulp.src('src/js/**/*.js')
           .pipe(webpackStream({
             mode: 'production',
             entry: './src/js/main.js',
