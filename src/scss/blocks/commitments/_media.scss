@@ -1,73 +1,73 @@
 @media (max-width: 991px) {
   .commitments {
-		padding: 36px 0 20px 0;
-		&__descr {
-			width: 100%;
-			font-size: 18px;
-		}
-		&__item {
-			margin-bottom: 20px;
-			display: grid;
-			grid-template: 27px auto / 200px auto;
-			column-gap: 10px;
-			&-image {
-				grid-row: 1 / 3;
-				grid-column: 1 / 2;
-				width: 200px;
-				height: auto;
-			}
-			&-title {
-				grid-row: 1 / 2;
-				grid-column: 2 / 3;
-				margin: 0;
-				text-align: left;
-			}
-			&-descr {
-				margin: 0;
-				grid-row: 2 / 3;
-				grid-column: 2 / 3;
-			}
-		}
-	}
+    padding: 36px 0 20px 0;
+    &__descr {
+      width: 100%;
+      font-size: 18px;
+    }
+    &__item {
+      margin-bottom: 20px;
+      display: grid;
+      grid-template: 27px auto / 200px auto;
+      column-gap: 10px;
+      &-image {
+        grid-row: 1 / 3;
+        grid-column: 1 / 2;
+        width: 200px;
+        height: auto;
+      }
+      &-title {
+        grid-row: 1 / 2;
+        grid-column: 2 / 3;
+        margin: 0;
+        text-align: left;
+      }
+      &-descr {
+        margin: 0;
+        grid-row: 2 / 3;
+        grid-column: 2 / 3;
+      }
+    }
+  }
 }
 
 @media (max-width: 767px) {
-	.commitments {
-		&__descr {
-			width: 100%;
-			font-size: 16px;
-		}
-		&__items {
-			margin-top: 22px;
-		}
-		&__item {
-			&-title {
-				font-size: 16px;
-			}
-			&-descr {
-				font-size: 14px;
-				line-height: 20px;
-			}
-		}
-	}
+  .commitments {
+    &__descr {
+      width: 100%;
+      font-size: 16px;
+    }
+    &__items {
+      margin-top: 22px;
+    }
+    &__item {
+      &-title {
+        font-size: 16px;
+      }
+      &-descr {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+  }
 }
 
 @media (max-width: 575px) {
-	.commitments {
-		padding: 18px 0 10px 0;
-		&__descr {
-			font-size: 14px;
-			line-height: 18px;
-		}
-		&__item {
-			display: block;
-			&-image {
-				width: 100%;
-			}
-			&-title {
-				margin-top: 10px;
-				text-align: center;
-			}
-		}
-	}
+  .commitments {
+    padding: 18px 0 10px 0;
+    &__descr {
+      font-size: 14px;
+      line-height: 18px;
+    }
+    &__item {
+      display: block;
+      &-image {
+        width: 100%;
+      }
+      &-title {
+        margin-top: 10px;
+        text-align: center;
+      }
+    }
+  }
 }

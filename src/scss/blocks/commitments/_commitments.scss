@@ -1,37 +1,37 @@
 .commitments {
-	padding: 51px 0 57px 0;
-	&__descr {
-		margin: 0 auto;
-		width: 880px;
-		color: $dark-grey-text;
-		font-size: 21px;
-		font-weight: 300;
-		line-height: 24px;
-		text-align: center;
-	}
-	&__items {
-		margin-top: 37px;
-	}
-	&__item {
-		&-image {
-			width: 100%;
-			height: 210px;
-			object-fit: cover;
-		}
-		&-title {
-			margin-top: 28px;
-			color: $orange-text-and-btn-bg;
-			font-size: 18px;
-			font-weight: 700;
-			text-align: center;
-		}
-		&-descr {
-			margin-top: 9px;
-			color: $grey-text;
-			font-size: 14px;
-			font-weight: 300;
-			line-height: 22px;
-			text-align: justify;
-		}
-	}
+  padding: 51px 0 57px 0;
+  &__descr {
+    margin: 0 auto;
+    width: 880px;
+    color: $dark-grey-text;
+    font-size: 21px;
+    font-weight: 300;
+    line-height: 24px;
+    text-align: center;
+  }
+  &__items {
+    margin-top: 37px;
+  }
+  &__item {
+    &-image {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+    }
+    &-title {
+      margin-top: 28px;
+      color: $orange-text-and-btn-bg;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+    }
+    &-descr {
+      margin-top: 9px;
+      color: $grey-text;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 22px;
+      text-align: justify;
+    }
+  }
 }

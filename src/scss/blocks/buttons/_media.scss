@@ -1,15 +1,15 @@
 @media (max-width: 991px) {
   .btn {
-		height: 40px;
-		&_small {
-			width: 140px;
-			font-size: 11px;
-		}
-		&_large {
-			border-radius: 47px;
-			width: 200px;
-			height: 47px;
-			font-size: 14px;
-		}
-	}
+    height: 40px;
+    &_small {
+      width: 140px;
+      font-size: 11px;
+    }
+    &_large {
+      border-radius: 47px;
+      width: 200px;
+      height: 47px;
+      font-size: 14px;
+    }
+  }
 }

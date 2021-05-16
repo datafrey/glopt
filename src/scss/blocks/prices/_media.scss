@@ -1,61 +1,61 @@
 @media (max-width: 1199px) {
   .prices {
-		&__pricelist {
-			&-item {
-				width: 210px;
-				&-descr {
-					width: 200px;
-				}
-			}
-		}
-	}
+    &__pricelist {
+      &-item {
+        width: 210px;
+        &-descr {
+          width: 200px;
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 991px) {
-	.prices {
-		padding: 40px 0 18px 0;
-		&__descr {
-			font-size: 18px;
-		}
-		&__pricelist {
-			&-item {
-				margin: 0 auto 20px auto;
-				width: 265px;
-				&-descr {
-					width: 234px;
-				}
-			}
-		}
-	}
+  .prices {
+    padding: 40px 0 18px 0;
+    &__descr {
+      font-size: 18px;
+    }
+    &__pricelist {
+      &-item {
+        margin: 0 auto 20px auto;
+        width: 265px;
+        &-descr {
+          width: 234px;
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 767px) {
   .prices {
-		&__descr {
-			width: 100%;
-			font-size: 16px;
-		}
-		&__pricelist {
-			&-item {
-				width: 100%;
-			}
-		}
-	}
+    &__descr {
+      width: 100%;
+      font-size: 16px;
+    }
+    &__pricelist {
+      &-item {
+        width: 100%;
+      }
+    }
+  }
 }
 
 @media (max-width: 575px) {
-	.prices {
-		padding: 20px 0 0 0;
-		&__descr {
-			font-size: 14px;
-			line-height: 18px;
-		}
-		&__pricelist {
-			margin-top: 16px;
-			&-item {
-				margin-bottom: 16px;
-				width: 265px;
-			}
-		}
-	}
+  .prices {
+    padding: 20px 0 0 0;
+    &__descr {
+      font-size: 14px;
+      line-height: 18px;
+    }
+    &__pricelist {
+      margin-top: 16px;
+      &-item {
+        margin-bottom: 16px;
+        width: 265px;
+      }
+    }
+  }
 }

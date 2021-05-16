@@ -1,51 +1,51 @@
 @media (max-width: 1199px) {
   .managers {
-		&__descr {
-			width: 100%;
-		}
-	}
+    &__descr {
+      width: 100%;
+    }
+  }
 }
 
 @media (max-width: 991px) {
   .managers {
-		padding: 40px 0 60px 0;
-		&__descr {
-			font-size: 18px;
-			line-height: 24px;
-		}
-	}
+    padding: 40px 0 60px 0;
+    &__descr {
+      font-size: 18px;
+      line-height: 24px;
+    }
+  }
 }
 
 @media (max-width: 767px) {
-	.managers {
-		padding: 35px 0 50px 0;
-		&__icon-container {
-			width: 80px;
-			height: 80px;
-		}
-		&__icon {
-			position: absolute;
-			height: 40px;
-			bottom: 20px;
-			left: 38px;
-		}	
-		&__descr {
-			font-size: 16px;
-			line-height: 20px;
-		}
-	}
+  .managers {
+    padding: 35px 0 50px 0;
+    &__icon-container {
+      width: 80px;
+      height: 80px;
+    }
+    &__icon {
+      position: absolute;
+      height: 40px;
+      bottom: 20px;
+      left: 38px;
+    }	
+    &__descr {
+      font-size: 16px;
+      line-height: 20px;
+    }
+  }
 }
 
 @media (max-width: 575px) {
-	.managers {
-		padding: 18px 0 25px 0;
-		&__title {
-			margin-top: 10px;
-		}
-		&__descr {
-			margin-top: 11px;
-			font-size: 14px;
-			line-height: 18px;
-		}
-	}
+  .managers {
+    padding: 18px 0 25px 0;
+    &__title {
+      margin-top: 10px;
+    }
+    &__descr {
+      margin-top: 11px;
+      font-size: 14px;
+      line-height: 18px;
+    }
+  }
 }

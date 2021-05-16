@@ -7,21 +7,21 @@
 @import 'base/animations';
 
 * {
-	font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .divider {
-	margin: 20px auto 17px auto;
-	width: 148px;
-	height: 1px;
-	background-color: $orange-text-and-btn-bg;
+  margin: 20px auto 17px auto;
+  width: 148px;
+  height: 1px;
+  background-color: $orange-text-and-btn-bg;
 }
 
 @media (max-width: 575px) {
-	.divider {
-		margin: 10px auto 8px auto;
-		width: 80px;
-	}
+  .divider {
+    margin: 10px auto 8px auto;
+    width: 80px;
+  }
 }
 
 @import 'blocks/buttons/buttons';
