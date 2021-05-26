@@ -3,37 +3,59 @@ const path = require('path');
 
 const gulp = require('gulp');
 const browserSync = require('browser-sync');
+const htmlmin = require('gulp-htmlmin');
 const sass = require('gulp-sass');
 const rename = require('gulp-rename');
 const autoprefixer = require('gulp-autoprefixer');
 const cleanCSS = require('gulp-clean-css');
-const imagemin = require('gulp-imagemin');
-const htmlmin = require('gulp-htmlmin');
 const webpackStream = require('webpack-stream');
+const changed = require('gulp-changed');
+const dircompare = require('dir-compare');
+const imagemin = require('gulp-imagemin');
+const imageminPngquant = require('imagemin-pngquant');
+const imageminZopfli = require('imagemin-zopfli');
+const imageminGiflossy = require('imagemin-giflossy');
 
-const dist = './dist/';
-const src = './src/';
+const distPath = path.join(__dirname, 'dist');
+const srcPath = path.join(__dirname, 'src');
 
-gulp.task('start-project', () => {
+const distHtmlPath = distPath;
+const srcHtmlPath = srcPath;
+
+const cssDir = 'css';
+// const cssPreprocessorType = 'sass';
+const cssPreprocessorType = 'scss';
+const distStylesPath = path.join(distPath, cssDir);
+const srcStylesPath = path.join(srcPath, cssPreprocessorType);
+
+const jsDir = 'js';
+const distScriptsPath = path.join(distPath, jsDir);
+const srcScriptsPath = path.join(srcPath, jsDir);
+
+const fontsDir = 'fonts';
+const distFontsPath = path.join(distPath, fontsDir);
+const srcFontsPath = path.join(srcPath, fontsDir);
+
+const iconsDir = 'icons';
+const distIconsPath = path.join(distPath, iconsDir);
+const srcIconsPath = path.join(srcPath, iconsDir);
+
+const imgDir = 'img';
+const distImagesPath = path.join(distPath, imgDir);
+const srcImagesPath = path.join(srcPath, imgDir);
+
+gulp.task('start', () => {
   const fsCb = error => error 
     ? console.log(error.toString()) 
     : undefined;
 
-  fs.mkdir(path.join(__dirname, dist), fsCb);
-  fs.mkdir(path.join(__dirname, src), fsCb);
+  fs.mkdir(distPath, fsCb);
+  fs.mkdir(srcPath, fsCb);
 
-  const gitignoreContent = `# See https://help.github.com/ignore-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-
-# testing
+  const gitignoreContent = `/node_modules
 /coverage
-
-# production
 /build
 
-# misc
 .DS_Store
 .env.local
 .env.development.local
@@ -60,30 +82,36 @@ yarn-error.log*
   },
   "rules": {
     "no-var": "error",
-    "no-unused-vars": "error",
     "semi": "error",
     "no-multi-spaces": "error",
     "space-in-parens": "error",
+    "no-multiple-empty-lines": "error",
     "prefer-const": "error",
-    "no-use-before-define": "error"
+    "no-use-before-define": "warn",
+    "max-len": "warn",
+    "no-unused-vars": "warn"
   }
 }`;
 
   fs.writeFile(path.join(__dirname, '.eslintrc.json'), eslintrcContent, fsCb);
 
-  const distFolders = [ 'css', 'fonts', 'icons', 'img', 'js' ];
-  const srcFolders = [ ...distFolders.slice(1), 'scss' ];
+  [
+    distStylesPath,
+    distFontsPath,
+    distIconsPath,
+    distImagesPath,
+    distScriptsPath,
+    srcStylesPath,
+    srcFontsPath,
+    srcIconsPath,
+    srcImagesPath,
+    srcScriptsPath
+  ].forEach(folder => fs.mkdir(folder, fsCb));
 
-  distFolders.forEach(
-    folder => fs.mkdir(path.join(__dirname, dist, folder), fsCb));
-
-  srcFolders.forEach(
-    folder => fs.mkdir(path.join(__dirname, src, folder), fsCb));
-
-  fs.writeFile(path.join(__dirname, dist, 'index.html'), 
+  fs.writeFile(path.join(distHtmlPath, 'index.html'), 
     '<head></head><body></body>', fsCb);
-  fs.writeFile(path.join(__dirname, dist, 'css', 'style.min.css'), '', fsCb);
-  fs.writeFile(path.join(__dirname, dist, 'js', 'bundle.js'), '', fsCb);
+  fs.writeFile(path.join(distStylesPath, 'style.min.css'), '', fsCb);
+  fs.writeFile(path.join(distScriptsPath, 'bundle.js'), '', fsCb);
 
   const indexHTMLContent = `<!DOCTYPE html>
 <html lang="en">
@@ -92,19 +120,32 @@ yarn-error.log*
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="css/style.min.css">
+  <link rel="stylesheet" href="${ cssDir }/style.min.css">
 </head>
 <body>
   
-  <script src="js/bundle.js"></script>
+  <script src="${ jsDir }/bundle.js"></script>
 </body>
 </html>`;
 
-  fs.writeFile(
-    path.join(__dirname, src, 'index.html'), indexHTMLContent, fsCb);
+  fs.writeFile(path.join(srcPath, 'index.html'), indexHTMLContent, fsCb);
 
-  fs.mkdir(path.join(__dirname, src, 'js', 'modules'), fsCb);
-  fs.writeFile(path.join(__dirname, src, 'js', 'main.js'), '', fsCb);
+  fs.mkdir(path.join(srcScriptsPath, 'modules'), fsCb);
+  fs.writeFile(path.join(srcScriptsPath, 'main.js'), '', fsCb);
+
+  const styleSASSContent = `// libs imports
+
+@import 'base/fonts'
+@import 'base/variables'
+@import 'base/mixins'
+@import 'base/animations'
+
+* 
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+
+// blocks imports`;
 
   const styleSCSSContent = `// libs imports
 
@@ -114,42 +155,51 @@ yarn-error.log*
 @import 'base/animations';
 
 * {
-
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 // blocks imports`;
 
-  fs.writeFile(
-    path.join(__dirname, src, 'scss', 'style.scss'), styleSCSSContent, fsCb);
+  switch (cssPreprocessorType) {
+    case 'sass':
+      fs.writeFile(
+        path.join(srcStylesPath, 'style.sass'), styleSASSContent, fsCb);
+      break;
+    case 'scss':
+      fs.writeFile(
+        path.join(srcStylesPath, 'style.scss'), styleSCSSContent, fsCb);
+      break;
+  }
   
-  const scssFolders = [ 'base', 'blocks', 'libs' ];
-  scssFolders.forEach(folder => {
-    fs.mkdir(path.join(__dirname, src, 'scss', folder), fsCb);
-  });
+  [
+    'base',
+    'blocks',
+    'libs'
+  ].forEach(folder => fs.mkdir(path.join(srcStylesPath, folder), fsCb));
 
-  const scssBaseFiles = [
-    '_animations.scss', 
-    '_fonts.scss', 
-    '_mixins.scss', 
-    '_variables.scss' 
-  ];
-  scssBaseFiles.forEach(filename => {
-    fs.writeFile(
-      path.join(__dirname, src, 'scss', 'base', filename), '', fsCb);
+  [
+    `_animations.${ cssPreprocessorType }`, 
+    `_fonts.${ cssPreprocessorType }`, 
+    `_mixins.${ cssPreprocessorType }`, 
+    `_variables.${ cssPreprocessorType }` 
+  ].forEach(filename => {
+    fs.writeFile(path.join(srcStylesPath, 'base', filename), '', fsCb);
   });
 
   return gulp.src('.');
 });
 
 gulp.task('html', () => {
-  return gulp.src('src/*.html')
+  return gulp.src(`${ srcHtmlPath }/*.html`)
           .pipe(htmlmin({ collapseWhitespace: true }))
-          .pipe(gulp.dest(dist))
+          .pipe(gulp.dest(distHtmlPath))
           .pipe(browserSync.stream());
 });
 
 gulp.task('styles', () => {
-  return gulp.src('src/scss/**/*.+(scss|sass)')
+  return gulp.src(`${ srcStylesPath }/**/*.+(scss|sass)`)
           .pipe(
             sass({ outputStyle: 'compressed' })
               .on('error', sass.logError)
@@ -157,18 +207,18 @@ gulp.task('styles', () => {
           .pipe(rename({ prefix: '', suffix: '.min' }))
           .pipe(autoprefixer({ cascade: false }))
           .pipe(cleanCSS({ compatibility: 'ie8' }))
-          .pipe(gulp.dest(`${ dist }/css`))
+          .pipe(gulp.dest(distStylesPath))
           .pipe(browserSync.stream());
 });
 
 gulp.task('scripts', () => {
-  return gulp.src('src/js/**/*.js')
+  return gulp.src(`${ srcScriptsPath }/**/*.js`)
           .pipe(webpackStream({
             mode: 'development',
-            entry: './src/js/main.js',
+            entry: path.join(srcScriptsPath, 'main.js'),
             output: {
               filename: 'bundle.js',
-              path: __dirname + `${ dist }/js`
+              path: distScriptsPath
             },
             watch: false,
             devtool: 'source-map',
@@ -196,45 +246,123 @@ gulp.task('scripts', () => {
               ]
             }
           }))
-          .pipe(gulp.dest(`${ dist }/js`))
+          .pipe(gulp.dest(distScriptsPath))
           .pipe(browserSync.stream());
 });
 
+function cleanUnusedFiles(distFolderPath, srcFolderPath) {
+  const options = { compareName: true };
+
+  const foldersComparisonResult = 
+    dircompare.compareSync(distFolderPath, srcFolderPath, options);
+
+  if (foldersComparisonResult.differences > 0) {
+    let lastRemovedDirectory;
+    for (const set of foldersComparisonResult.diffSet) {
+      if (set.type2 === 'missing') {
+        switch (set.type1) {
+          case 'file':
+            if (lastRemovedDirectory) {
+              if (lastRemovedDirectory === set.path1 || 
+                  path.relative(lastRemovedDirectory, set.path1)) {
+                continue;
+              }
+            }
+            
+            try {
+              fs.unlinkSync(path.join(set.path1, set.name1));
+            } catch(err) {
+              console.log(err);
+            }
+
+            break;
+          case 'directory':
+            try {
+              fs.rmdirSync(
+                path.join(set.path1, set.name1), 
+                { recursive: true }
+              );
+              lastRemovedDirectory = set.path1;
+            } catch(err) {
+              console.log(err);
+            }
+            
+            break;
+        }
+      }
+    }
+  }
+}
+
 gulp.task('fonts', () => {
-  return gulp.src('src/fonts/**/*')
-          .pipe(gulp.dest(`${ dist }/fonts`))
+  cleanUnusedFiles(distFontsPath, srcFontsPath);
+  return gulp.src(`${ srcFontsPath }/**/*`)
+          .pipe(changed(distFontsPath))
+          .pipe(gulp.dest(distFontsPath))
           .pipe(browserSync.stream());
 });
 
 gulp.task('icons', () => {
-  return gulp.src('src/icons/**/*')
-          .pipe(gulp.dest(`${ dist }/icons`))
+  cleanUnusedFiles(distIconsPath, srcIconsPath);
+  return gulp.src(`${ srcIconsPath }/**/*`)
+          .pipe(changed(distIconsPath))
+          .pipe(gulp.dest(distIconsPath))
           .pipe(browserSync.stream());
 });
 
 gulp.task('images', () => {
-  return gulp.src('src/img/**/*')
+  cleanUnusedFiles(distImagesPath, srcImagesPath);
+  return gulp.src(`${ srcImagesPath }/**/*`)
+          .pipe(changed(distImagesPath))
           .pipe(
             imagemin([
-              imagemin.gifsicle({ interlaced: true }),
-              imagemin.mozjpeg({ quality: 90, progressive: true }),
-              imagemin.optipng({ optimizationLevel: 5 }),
+              imageminPngquant({
+                speed: 1,
+                quality: [ 0.95, 1 ]
+              }),
+              imageminZopfli({
+                more: true
+              }),
+              imageminGiflossy({
+                optimizationLevel: 3,
+                optimize: 3,
+                lossy: 2
+              }),
               imagemin.svgo({
                 plugins: [
                   { removeViewBox: true }, 
                   { cleanupIDs: false }
                 ]
+              }),
+              imagemin.mozjpeg({
+                quality: 90,
+                progressive: true
               })
             ])
           )
-          .pipe(gulp.dest(`${ dist }/img`))
+          .pipe(gulp.dest(distImagesPath))
           .pipe(browserSync.stream());
 });
 
+gulp.task('refresh-dist', gulp.parallel('html', 'styles', 'scripts', 
+                                        'fonts', 'icons', 'images'));
+
+function fixPathForGulpWatch(oldPath) {
+  const pathString = oldPath;
+  const fix = /\\{1,}|\/{1,}/;
+  const userHome = require('os').homedir();
+
+  return pathString.replace(new RegExp(fix, 'gm'), '/')
+          .replace(new RegExp(fix, 'gm'), '/')
+          .replace('~', userHome);
+}
+
 gulp.task('watch', () => {
+  gulp.parallel('refresh-dist')();
+
   const bsPort = 3000;
   browserSync.init({
-    server: dist,
+    server: distPath,
     port: bsPort,
     ui: {
       port: bsPort + 1
@@ -242,22 +370,28 @@ gulp.task('watch', () => {
     notify: true
   });
 
-  gulp.watch('src/*.html').on('change', gulp.parallel('html'));
-  gulp.watch('src/scss/**/*.+(scss|sass|css)', gulp.parallel('styles'));
-  gulp.watch('src/js/**/*.js').on('change', gulp.parallel('scripts'));
-  gulp.watch('src/fonts/**/*').on('all', gulp.parallel('fonts'));
-  gulp.watch('src/icons/**/*').on('all', gulp.parallel('icons'));
-  gulp.watch('src/img/**/*').on('all', gulp.parallel('images'));
+  gulp.watch(`${ fixPathForGulpWatch(srcHtmlPath) }/*.html`)
+    .on('change', gulp.parallel('html'));
+  gulp.watch(`${ fixPathForGulpWatch(srcStylesPath) }/**/*.+(scss|sass|css)`, 
+    gulp.parallel('styles'));
+  gulp.watch(`${ fixPathForGulpWatch(srcScriptsPath) }/**/*.js`)
+    .on('change', gulp.parallel('scripts'));
+  gulp.watch(`${ fixPathForGulpWatch(srcFontsPath) }/**/*`)
+    .on('all', gulp.parallel('fonts'));
+  gulp.watch(`${ fixPathForGulpWatch(srcIconsPath) }/**/*`)
+    .on('all', gulp.parallel('icons'));
+  gulp.watch(`${ fixPathForGulpWatch(srcImagesPath) }/**/*`)
+    .on('all', gulp.parallel('images'));
 });
 
 gulp.task('build-production-scripts', () => {
-  return gulp.src('src/js/**/*.js')
+  return gulp.src(`${ srcScriptsPath }/**/*.js`)
           .pipe(webpackStream({
             mode: 'production',
-            entry: './src/js/main.js',
+            entry: path.join(srcScriptsPath, 'main.js'),
             output: {
               filename: 'bundle.js',
-              path: __dirname + `${ dist }/js`
+              path: distScriptsPath
             },
             module: {
               rules: [
@@ -282,7 +416,7 @@ gulp.task('build-production-scripts', () => {
               ]
             }
           }))
-          .pipe(gulp.dest(`${ dist }/js`));
+          .pipe(gulp.dest(distScriptsPath));
 });
 
 gulp.task('default', gulp.parallel('watch'));
